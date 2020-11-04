@@ -5,9 +5,3 @@ authors = ["Erick <erick.8bld@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[profile.dev] # profile used when building with `cargo build`
-panic = "abort" # for disabling stack unwinding on panic
-
-[profile.release] # profile used when building with `cargo build --release`
-panic = "abort" # for disabling stack unwinding on panic
