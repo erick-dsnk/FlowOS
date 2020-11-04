@@ -13,27 +13,22 @@
 
 use core::panic::PanicInfo;
 
-static HELLO: &[u8] = b"Hello!";
+mod vga_buffer;
 
 // Main entry point called by the bootloader.
 #[no_mangle] // disable mangling of the function name.
 pub extern "C" fn _start() -> ! {
-    let vga_buffer = 0xb8000 as *mut u8;
+    use core::fmt::Write;
 
-    for (i, &byte) in HELLO.iter().enumerate() {
-        unsafe {
-            *vga_buffer.offset(i as isize * 2) = byte;
-            *vga_buffer.offset(i as isize * 2 + 1) = 0xb;
-        }
-    }
-    
+    vga_buffer::WRITER.lock().write_string("Success!");
+
+    write!(vga_buffer::WRITER.lock(), "Here's some numbers: {} {}", 2532, 27.2).unwrap();
+
     loop {}
 }
-
 
 // Function called when the program panics.
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
-

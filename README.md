@@ -14,6 +14,7 @@ You will also need the LLVM tools. Install using:
 ```
 rustup component add llvm-tools-preview
 ```
+Also install QEMU to be able to run it in a virtual machine.
 
 #### Building
 To build the OS and make a bootable image use the command:
@@ -27,3 +28,5 @@ Use QEMU to boot it up with the following command:
 ```
 qemu-system-x86_64 -drive format=raw,file=target/x86_64-flow_os/debug/bootimage-flow_os.bin
 ```
+
+**Additionally, you can use `cargo run` to build and boot Flow in QEMU**
