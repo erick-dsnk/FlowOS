@@ -120,10 +120,31 @@ impl fmt::Write for Writer {
     }
 }
 
+// statics are initialized at compile time unlike normal variables that
+// are initialized at run time. thereforre, rust doesn't support calling
+// non const functions. this macro defines a lazily intialized static, which 
+// means it will be initialized at run time when its first accessed.
 lazy_static! {
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         col_pos: 0,
         color_code: ColorCode::new(Color::Yellow, Color::Black),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
     });
+}
+
+#[macro_export]
+macro_rules! print {
+    ($($arg:tt)*) => ($crate::vga_buffer::_print(format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules! println {
+    () => ($crate::print!("\n"));
+    ($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
+}
+
+#[doc(hidden)]
+pub fn _print(args: fmt::Arguments) {
+    use core::fmt::Write;
+    WRITER.lock().write_fmt(args).unwrap();
 }

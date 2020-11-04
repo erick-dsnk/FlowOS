@@ -20,15 +20,15 @@ mod vga_buffer;
 pub extern "C" fn _start() -> ! {
     use core::fmt::Write;
 
-    vga_buffer::WRITER.lock().write_string("Success!");
-
-    write!(vga_buffer::WRITER.lock(), "Here's some numbers: {} {}", 2532, 27.2).unwrap();
+    vga_buffer::WRITER.lock().write_string("It works!\n");
 
     loop {}
 }
 
 // Function called when the program panics.
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    println!("[!] {}", info);
+
     loop {}
 }
