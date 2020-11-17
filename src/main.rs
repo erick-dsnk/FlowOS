@@ -24,8 +24,12 @@ use flow_os::println;
 pub extern "C" fn _start() -> ! {
     println!("[*] Success!");
 
+    flow_os::init();
+
     #[cfg(test)]
     test_main();
+
+    println!("no crash");
 
     loop {}
 }
